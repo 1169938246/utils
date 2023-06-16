@@ -1,0 +1,25 @@
+/**
+ * 合并单元格(单列)
+ * @param {*} data 数组数据
+ * @param {*} dataIndex 表格列的 key
+ * @returns
+ */
+export const mergeTableCell = (data, dataIndex) => {
+  return data
+    .reduce((result, item) => {
+      if (result.indexOf(item[dataIndex]) < 0) {
+        result.push(item[dataIndex]);
+      }
+      return result;
+    }, [])
+    .reduce((result, name) => {
+      const children = data.filter((item) => item[dataIndex] === name);
+      result = result.concat(
+        children.map((item, index) => ({
+          ...item,
+          [dataIndex + 'RowSpan']: index === 0 ? children.length : 0,
+        })),
+      );
+      return result;
+    }, []);
+};
