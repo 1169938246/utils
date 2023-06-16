@@ -1,0 +1,32 @@
+export const mergeMultiTableCell = (arr, ...rest) => {
+  rest.forEach((r, rx) => {
+    const exist = new Map();
+    arr.forEach((item) => {
+      const key = rest.slice(0, rx + 1).map((col) => item[col]).join('.');
+      if (!exist.has(key)) {
+        exist.set(key, []);
+      }
+      exist.get(key).push(item);
+    });
+
+    exist.forEach((group) => {
+      group.forEach((item, index) => {
+        if (index === 0) {
+          item[`${r}RowSpan`] = group.length;
+        } else {
+          item[`${r}RowSpan`] = 0;
+        }
+      });
+    });
+  });
+
+  return arr;
+};
+
+//使用实例
+//  const list = mergeMultiTableCell(
+              rs.data,
+              'targetId',
+              'objectName',
+              // 'content'
+            );
