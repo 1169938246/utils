@@ -1,0 +1,22 @@
+/**
+ * 导出二进制流文件
+ * @param {res} 返回的文件流
+ * @param {name} 下载下来的文件名
+ */
+export const switchBlobToFile = (res, name = '') => {
+  if (!res) return;
+  const blob = new Blob([res], { type: res.type });
+  const elink = document.createElement('a');
+  const href = window.URL.createObjectURL(blob);
+  elink.href = href;
+  elink.download = name;
+  elink.style.display = 'none';
+  document.body.appendChild(elink);
+  elink.click();
+  document.body.removeChild(elink);
+  // 释放blob对象
+  window.URL.revokeObjectURL(href);
+};
+
+//  switchBlobToFile(data, '列表');
+//后端返回二进制文件流的数据，前端使用a标签模拟下载导出文件。
